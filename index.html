@@ -46,7 +46,8 @@
         .overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
         }
 
         .content-box {
@@ -114,15 +115,18 @@
             background-position: center;
         }
 
-        .carousel-caption-custom {
+        /* Fixed Caption Logic - Agar nama tidak hilang saat slide ganti */
+        .fixed-caption {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
             color: white;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
             width: 100%;
+            z-index: 10;
+            pointer-events: none; /* Agar tidak menghalangi klik navigasi jika ada */
         }
 
         /* Countdown */
@@ -131,6 +135,7 @@
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
+            pointer-events: auto;
         }
 
         .count-box {
@@ -175,10 +180,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Section Backgrounds - Updated Background Image for Home */
-        #home-section {
-            background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070'); /* Tangan mempelai memakai cincin */
-        }
+        /* Section Backgrounds */
         #acara { background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069'); }
         #ucapan { background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070'); }
         #kado { background-image: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2070'); }
@@ -217,30 +219,34 @@
         <a href="#kado">Kado</a>
     </nav>
 
-    <!-- Section 1: Slideshow & Countdown -->
+    <!-- Section 1: Background Tetap & Slideshow -->
     <section id="home-section" class="parallax-section p-0">
-        <div id="heroCarousel" class="carousel slide carousel-fade w-100" data-bs-ride="carousel">
-            <div class="carousel-inner">
+        <!-- Overlay Gelap agar Teks Selalu Terbaca -->
+        <div class="overlay"></div>
+
+        <!-- Teks yang Dikunci (Static) -->
+        <div class="fixed-caption">
+            <h1 class="display-2 mb-0">M. Rizqi Maulana</h1>
+            <h2 class="display-4">&</h2>
+            <h1 class="display-2 mb-4">Salsa</h1>
+            <p class="lead mb-4">Kami Mengundang Anda dalam Kebahagiaan Kami</p>
+            
+            <div class="countdown-container" id="countdown">
+                <div class="count-box"><span id="days">00</span>Hari</div>
+                <div class="count-box"><span id="hours">00</span>Jam</div>
+                <div class="count-box"><span id="mins">00</span>Menit</div>
+                <div class="count-box"><span id="secs">00</span>Detik</div>
+            </div>
+        </div>
+
+        <!-- Slideshow hanya untuk Background -->
+        <div id="heroCarousel" class="carousel slide carousel-fade w-100 h-100" data-bs-ride="carousel">
+            <div class="carousel-inner h-100">
                 <!-- Slide 1: Tangan Mempelai & Cincin -->
                 <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070');">
-                    <div class="overlay" style="background: rgba(0,0,0,0.4);"></div>
                 </div>
                 <!-- Slide 2: Variasi Tangan/Cincin Lainnya -->
                 <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2070');">
-                    <div class="overlay" style="background: rgba(0,0,0,0.4);"></div>
-                </div>
-            </div>
-            <div class="carousel-caption-custom">
-                <h1 class="display-2 mb-0">M. Rizqi Maulana</h1>
-                <h2 class="display-4">&</h2>
-                <h1 class="display-2 mb-4">Salsa</h1>
-                <p class="lead mb-4">Kami Mengundang Anda dalam Kebahagiaan Kami</p>
-                
-                <div class="countdown-container" id="countdown">
-                    <div class="count-box"><span id="days">00</span>Hari</div>
-                    <div class="count-box"><span id="hours">00</span>Jam</div>
-                    <div class="count-box"><span id="mins">00</span>Menit</div>
-                    <div class="count-box"><span id="secs">00</span>Detik</div>
                 </div>
             </div>
         </div>
@@ -248,7 +254,7 @@
 
     <!-- Section 2: Detail Acara & Lokasi -->
     <section id="acara" class="parallax-section">
-        <div class="overlay"></div>
+        <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box">
             <h2 class="display-5 text-pink mb-4">Detail Acara</h2>
             <div class="row g-4">
@@ -271,11 +277,10 @@
 
     <!-- Section 3: Ucapan & Live Chat -->
     <section id="ucapan" class="parallax-section">
-        <div class="overlay"></div>
+        <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box" style="text-align: left;">
             <h2 class="text-center mb-4">Ucapan & Doa Restu</h2>
             <div id="chat-box">
-                <!-- Dummy Data -->
                 <div class="chat-msg"><b>Andi:</b> Selamat menempuh hidup baru Rizqi & Salsa! Semoga samawa.</div>
                 <div class="chat-msg"><b>Siti:</b> Happy Wedding! Bahagia selalu dunia akhirat.</div>
                 <div class="chat-msg"><b>Budi:</b> Lancar sampai hari H ya kawan!</div>
@@ -295,7 +300,7 @@
 
     <!-- Section 4: Kado Digital -->
     <section id="kado" class="parallax-section">
-        <div class="overlay"></div>
+        <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box">
             <h2 class="mb-4">Kado Digital</h2>
             <p>Doa restu Anda merupakan kado terindah bagi kami. Namun jika Anda ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:</p>
@@ -388,7 +393,7 @@
                 }, 2000);
             });
 
-            // 4. Form Ucapan (Live Chat Logic)
+            // 4. Form Ucapan
             $("#formUcapan").submit(function(e) {
                 e.preventDefault();
                 const nama = $("#inputNama").val();
@@ -398,16 +403,14 @@
                 $("#chat-box").append(html);
                 $("#chat-box").animate({ scrollTop: $('#chat-box')[0].scrollHeight }, 500);
                 
-                // Show Toast
                 const toastLive = document.getElementById('liveToast');
                 const toast = new bootstrap.Toast(toastLive);
                 toast.show();
                 
-                // Reset Form
                 this.reset();
             });
 
-            // 5. Smooth Scroll untuk Floating Nav
+            // 5. Smooth Scroll
             $('.floating-nav a').on('click', function(event) {
                 if (this.hash !== "") {
                     event.preventDefault();
