@@ -95,8 +95,8 @@
             color: var(--dark-blue);
         }
 
-        /* QR Button */
-        .qr-button {
+        /* QR Button diganti jadi Button Check-in */
+        .checkin-button {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -104,11 +104,22 @@
             background: var(--dark-pink);
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .checkin-button i {
+            font-size: 20px;
+            margin-bottom: 2px;
         }
 
         /* Slideshow */
@@ -216,9 +227,10 @@
 </head>
 <body>
 
-    <!-- Tombol QR -->
-    <button class="qr-button" data-bs-toggle="modal" data-bs-target="#qrModal">
-        <i class="fas fa-qrcode"></i>
+    <!-- Tombol Check-in (Pengganti QR) -->
+    <button class="checkin-button" data-bs-toggle="modal" data-bs-target="#checkInModal">
+        <i class="fas fa-user-check"></i>
+        <span>HADIR</span>
     </button>
 
     <!-- Floating Navigation -->
@@ -246,8 +258,9 @@
         </div>
         <div id="heroCarousel" class="carousel slide carousel-fade w-100 h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
-                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070');"></div>
-                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2070');"></div>
+                <!-- Mengganti gambar wanita kacamata dengan dekorasi pernikahan -->
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070');"></div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070');"></div>
             </div>
         </div>
     </section>
@@ -295,10 +308,9 @@
                 <!-- Tab Daftar Hadir -->
                 <div class="tab-pane fade" id="pills-presence" role="tabpanel">
                     <div id="attendance-list">
-                        <!-- Tamu yang check-in akan muncul di sini -->
                         <div class="text-center text-muted py-5" id="noGuest">Belum ada tamu yang check-in.</div>
                     </div>
-                    <p class="small text-muted text-center mt-2">*Daftar ini mencatat tamu yang telah melakukan scan QR Check-in.</p>
+                    <p class="small text-muted text-center mt-2">*Daftar tamu yang telah mengonfirmasi kehadiran di lokasi.</p>
                 </div>
             </div>
         </div>
@@ -320,28 +332,22 @@
         </div>
     </section>
 
-    <!-- Modal QR Check-in -->
-    <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+    <!-- Modal Check-in (Tanpa QR) -->
+    <div class="modal fade" id="checkInModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title">Check-in Kehadiran</h5>
+                    <h5 class="modal-title">Konfirmasi Kehadiran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <div id="checkInStep1">
-                        <p>Silahkan masukkan nama Anda untuk memulai check-in:</p>
-                        <input type="text" id="checkInName" class="form-control mb-3 text-center" placeholder="Nama Lengkap">
-                        <button class="btn btn-custom w-100" id="btnNextCheckIn">Lanjut Scan</button>
-                    </div>
-                    
-                    <div id="checkInStep2" style="display:none;">
-                        <p>Halo <strong id="displayName"></strong>, silahkan perlihatkan/konfirmasi scan QR di bawah:</p>
-                        <div class="mb-3">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WEDDING-RIZQI-SALSA-2026" alt="QR Code" class="img-fluid border p-2 shadow-sm">
-                        </div>
-                        <button class="btn btn-success w-100" id="confirmPresence">Konfirmasi Kehadiran</button>
-                    </div>
+                    <p>Silahkan masukkan nama Anda untuk mencatat kehadiran di lokasi acara:</p>
+                    <form id="formCheckIn">
+                        <input type="text" id="checkInName" class="form-control mb-3 text-center" placeholder="Nama Lengkap" required>
+                        <button type="submit" class="btn btn-success w-100 py-2">
+                            <i class="fas fa-check-circle"></i> Saya Sudah Hadir
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -381,21 +387,14 @@
                 $("#secs").text(s < 10 ? "0"+s : s);
             }, 1000);
 
-            // Logic Check-in
-            $("#btnNextCheckIn").click(function() {
+            // Logic Check-in Form
+            $("#formCheckIn").submit(function(e) {
+                e.preventDefault();
                 const name = $("#checkInName").val().trim();
-                if(name === "") return alert("Masukkan nama Anda!");
-                
-                $("#displayName").text(name);
-                $("#checkInStep1").fadeOut(300, () => $("#checkInStep2").fadeIn(300));
-            });
-
-            $("#confirmPresence").click(function() {
-                const name = $("#checkInName").val();
                 const now = new Date();
                 const timeStr = now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
                 
-                // Add to list
+                // Tambahkan ke daftar hadir
                 $("#noGuest").hide();
                 const item = `<div class="attendance-item">
                     <span><i class="fas fa-check-circle text-success"></i> <strong>${name}</strong></span>
@@ -403,23 +402,20 @@
                 </div>`;
                 $("#attendance-list").prepend(item);
                 
-                // Update counter
+                // Update counter tamu
                 guestCount++;
                 $("#countHadir").text(guestCount);
                 
-                // Reset & Hide
-                const modal = bootstrap.Modal.getInstance(document.getElementById('qrModal'));
+                // Tutup Modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('checkInModal'));
                 modal.hide();
                 
-                $("#toastBody").text(name + " berhasil check-in!");
+                // Notifikasi
+                $("#toastBody").text("Selamat datang, " + name + "!");
                 new bootstrap.Toast(document.getElementById('liveToast')).show();
                 
-                // Reset form check-in for next use
-                setTimeout(() => {
-                    $("#checkInStep2").hide();
-                    $("#checkInStep1").show();
-                    $("#checkInName").val("");
-                }, 500);
+                // Reset input
+                $("#checkInName").val("");
             });
 
             // Form Ucapan
@@ -443,6 +439,17 @@
                 t.remove();
                 $(this).text("Tersalin!");
                 setTimeout(() => $(this).html('<i class="far fa-copy"></i> Salin Rekening'), 2000);
+            });
+
+            // Smooth Scroll
+            $('.floating-nav a').on('click', function(event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800);
+                }
             });
         });
     </script>
