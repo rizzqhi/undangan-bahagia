@@ -18,6 +18,7 @@
             --blue-theme: #bbdefb;
             --dark-pink: #d81b60;
             --dark-blue: #1976d2;
+            --green-success: #2e7d32;
         }
 
         body {
@@ -61,6 +62,8 @@
             max-width: 800px;
             width: 90%;
             text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         /* Floating Nav */
@@ -115,7 +118,6 @@
             background-position: center;
         }
 
-        /* Fixed Caption Logic - Agar nama tidak hilang saat slide ganti */
         .fixed-caption {
             position: absolute;
             top: 50%;
@@ -126,7 +128,7 @@
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
             width: 100%;
             z-index: 10;
-            pointer-events: none; /* Agar tidak menghalangi klik navigasi jika ada */
+            pointer-events: none;
         }
 
         /* Countdown */
@@ -152,9 +154,9 @@
             font-weight: bold;
         }
 
-        /* Live Chat Styling */
-        #chat-box {
-            height: 300px;
+        /* Scrollable Boxes */
+        #chat-box, #attendance-list {
+            height: 250px;
             overflow-y: auto;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -163,14 +165,22 @@
             margin-bottom: 15px;
         }
 
-        .chat-msg {
+        .chat-msg, .attendance-item {
             background: var(--blue-theme);
             padding: 8px 12px;
             border-radius: 15px;
             margin-bottom: 10px;
-            max-width: 80%;
+            max-width: 90%;
             font-size: 14px;
             animation: fadeIn 0.5s ease;
+        }
+
+        .attendance-item {
+            background: #e8f5e9;
+            border-left: 4px solid var(--green-success);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .chat-msg b { color: var(--dark-pink); }
@@ -200,7 +210,7 @@
         }
 
         .toast-container {
-            z-index: 2000;
+            z-index: 3000;
         }
     </style>
 </head>
@@ -219,18 +229,14 @@
         <a href="#kado">Kado</a>
     </nav>
 
-    <!-- Section 1: Background Tetap & Slideshow -->
+    <!-- Section 1: Hero -->
     <section id="home-section" class="parallax-section p-0">
-        <!-- Overlay Gelap agar Teks Selalu Terbaca -->
         <div class="overlay"></div>
-
-        <!-- Teks yang Dikunci (Static) -->
         <div class="fixed-caption">
             <h1 class="display-2 mb-0">M. Rizqi Maulana</h1>
             <h2 class="display-4">&</h2>
-            <h1 class="display-2 mb-4">Siapa ?</h1>
-            <p class="lead mb-4">Kami Mengundang Anda dalam acara yang sangat membahagiakan</p>
-            
+            <h1 class="display-2 mb-4">Salsa</h1>
+            <p class="lead mb-4">Kami Mengundang Anda dalam Kebahagiaan Kami</p>
             <div class="countdown-container" id="countdown">
                 <div class="count-box"><span id="days">00</span>Hari</div>
                 <div class="count-box"><span id="hours">00</span>Jam</div>
@@ -238,114 +244,117 @@
                 <div class="count-box"><span id="secs">00</span>Detik</div>
             </div>
         </div>
-
-        <!-- Slideshow hanya untuk Background -->
         <div id="heroCarousel" class="carousel slide carousel-fade w-100 h-100" data-bs-ride="carousel">
             <div class="carousel-inner h-100">
-                <!-- Slide 1: Tangan Mempelai & Cincin -->
-                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070');">
-                </div>
-                <!-- Slide 2: Variasi Tangan/Cincin Lainnya -->
-                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2070');">
-                </div>
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070');"></div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2070');"></div>
             </div>
         </div>
     </section>
 
-    <!-- Section 2: Detail Acara & Lokasi -->
+    <!-- Section 2: Detail Acara -->
     <section id="acara" class="parallax-section">
         <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box">
             <h2 class="display-5 text-pink mb-4">Detail Acara</h2>
-            <div class="row g-4">
-                <div class="col-md-12">
-                    <h4>Akad & Resepsi Pernikahan</h4>
-                    <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 29 April 2026</p>
-                    <p class="mb-1"><i class="far fa-clock"></i> 09.00 WIB - Selesai</p>
-                    <hr>
-                    <p><strong>Lokasi:</strong><br>
-                    Bambangan Rt : 025 Rw : 005,<br>
-                    Kebowan, Suruh</p>
-                    
-                    <button id="btnMap" class="btn btn-custom mt-3">
-                        <i class="fas fa-map-marker-alt"></i> Navigasi Lokasi
-                    </button>
-                </div>
-            </div>
+            <h4>Akad & Resepsi Pernikahan</h4>
+            <p class="mb-1"><i class="far fa-calendar-alt"></i> Minggu, 29 April 2026</p>
+            <p class="mb-1"><i class="far fa-clock"></i> 09.00 WIB - Selesai</p>
+            <hr>
+            <p><strong>Lokasi:</strong><br>Bambangan Rt : 025 Rw : 005,<br>Kebowan, Suruh</p>
+            <button id="btnMap" class="btn btn-custom mt-2"><i class="fas fa-map-marker-alt"></i> Navigasi Lokasi</button>
         </div>
     </section>
 
-    <!-- Section 3: Ucapan & Live Chat -->
+    <!-- Section 3: Ucapan & Daftar Hadir -->
     <section id="ucapan" class="parallax-section">
         <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box" style="text-align: left;">
-            <h2 class="text-center mb-4">Ucapan & Doa Restu</h2>
-            <div id="chat-box">
-                <div class="chat-msg"><b>Andi:</b> Selamat menempuh hidup baru Rizqi & Salsa! Semoga samawa.</div>
-                <div class="chat-msg"><b>Siti:</b> Happy Wedding! Bahagia selalu dunia akhirat.</div>
-                <div class="chat-msg"><b>Budi:</b> Lancar sampai hari H ya kawan!</div>
-            </div>
+            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-chat-tab" data-bs-toggle="pill" data-bs-target="#pills-chat" type="button" role="tab">Buku Ucapan</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-presence-tab" data-bs-toggle="pill" data-bs-target="#pills-presence" type="button" role="tab">Tamu Hadir (<span id="countHadir">0</span>)</button>
+                </li>
+            </ul>
             
-            <form id="formUcapan">
-                <div class="mb-2">
-                    <input type="text" id="inputNama" class="form-control" placeholder="Nama Anda" required>
+            <div class="tab-content" id="pills-tabContent">
+                <!-- Tab Ucapan -->
+                <div class="tab-pane fade show active" id="pills-chat" role="tabpanel">
+                    <div id="chat-box">
+                        <div class="chat-msg"><b>Andi:</b> Selamat menempuh hidup baru Rizqi & Salsa!</div>
+                    </div>
+                    <form id="formUcapan">
+                        <input type="text" id="inputNama" class="form-control mb-2" placeholder="Nama Anda" required>
+                        <textarea id="inputPesan" class="form-control mb-2" rows="2" placeholder="Tulis ucapan..." required></textarea>
+                        <button type="submit" class="btn btn-custom w-100">Kirim Ucapan</button>
+                    </form>
                 </div>
-                <div class="mb-2">
-                    <textarea id="inputPesan" class="form-control" rows="2" placeholder="Tulis ucapan..." required></textarea>
+                
+                <!-- Tab Daftar Hadir -->
+                <div class="tab-pane fade" id="pills-presence" role="tabpanel">
+                    <div id="attendance-list">
+                        <!-- Tamu yang check-in akan muncul di sini -->
+                        <div class="text-center text-muted py-5" id="noGuest">Belum ada tamu yang check-in.</div>
+                    </div>
+                    <p class="small text-muted text-center mt-2">*Daftar ini mencatat tamu yang telah melakukan scan QR Check-in.</p>
                 </div>
-                <button type="submit" class="btn btn-custom w-100">Kirim Ucapan</button>
-            </form>
+            </div>
         </div>
     </section>
 
-    <!-- Section 4: Kado Digital -->
+    <!-- Section 4: Kado -->
     <section id="kado" class="parallax-section">
         <div class="overlay" style="background: rgba(255, 255, 255, 0.4);"></div>
         <div class="content-box">
             <h2 class="mb-4">Kado Digital</h2>
-            <p>Doa restu Anda merupakan kado terindah bagi kami. Namun jika Anda ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:</p>
-            
             <div class="card border-0 shadow-sm mx-auto" style="max-width: 400px; background: var(--blue-theme);">
-                <div class="card-body">
+                <div class="card-body text-center">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="height: 30px;" class="mb-3">
                     <h4 class="mb-1" id="rekNomor">0202445598</h4>
                     <p class="text-muted mb-3">a.n M. Rizqi Maulana</p>
-                    <button class="btn btn-sm btn-dark" id="btnCopy">
-                        <i class="far fa-copy"></i> Salin Rekening
-                    </button>
+                    <button class="btn btn-sm btn-dark" id="btnCopy"><i class="far fa-copy"></i> Salin Rekening</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Modal QR -->
+    <!-- Modal QR Check-in -->
     <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title">Check-in / Out</h5>
+                    <h5 class="modal-title">Check-in Kehadiran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center pb-5">
-                    <p>Silahkan scan kode QR ini di lokasi acara.</p>
-                    <div id="qrcode">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WEDDING-RIZQI-SALSA-2026" alt="QR Code" class="img-fluid border p-2">
+                <div class="modal-body text-center">
+                    <div id="checkInStep1">
+                        <p>Silahkan masukkan nama Anda untuk memulai check-in:</p>
+                        <input type="text" id="checkInName" class="form-control mb-3 text-center" placeholder="Nama Lengkap">
+                        <button class="btn btn-custom w-100" id="btnNextCheckIn">Lanjut Scan</button>
+                    </div>
+                    
+                    <div id="checkInStep2" style="display:none;">
+                        <p>Halo <strong id="displayName"></strong>, silahkan perlihatkan/konfirmasi scan QR di bawah:</p>
+                        <div class="mb-3">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=WEDDING-RIZQI-SALSA-2026" alt="QR Code" class="img-fluid border p-2 shadow-sm">
+                        </div>
+                        <button class="btn btn-success w-100" id="confirmPresence">Konfirmasi Kehadiran</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Toast Container -->
+    <!-- Toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-primary text-white">
-                <strong class="me-auto">Pemberitahuan</strong>
+                <strong class="me-auto">Info</strong>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
-                Pesan Anda berhasil terkirim!
-            </div>
+            <div class="toast-body" id="toastBody"></div>
         </div>
     </div>
 
@@ -355,70 +364,85 @@
     
     <script>
         $(document).ready(function() {
-            // 1. Countdown Timer
+            let guestCount = 0;
+
+            // Countdown
             const weddingDate = new Date("April 29, 2026 09:00:00").getTime();
-            
-            setInterval(function() {
+            setInterval(() => {
                 const now = new Date().getTime();
                 const distance = weddingDate - now;
-                
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                $("#days").text(days < 10 ? "0"+days : days);
-                $("#hours").text(hours < 10 ? "0"+hours : hours);
-                $("#mins").text(minutes < 10 ? "0"+minutes : minutes);
-                $("#secs").text(seconds < 10 ? "0"+seconds : seconds);
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((distance % (1000 * 60)) / 1000);
+                $("#days").text(d < 10 ? "0"+d : d);
+                $("#hours").text(h < 10 ? "0"+h : h);
+                $("#mins").text(m < 10 ? "0"+m : m);
+                $("#secs").text(s < 10 ? "0"+s : s);
             }, 1000);
 
-            // 2. Navigasi Map
-            $("#btnMap").click(function() {
-                window.open("https://www.google.com/maps?q=-7.371509,110.552469", "_blank");
-            });
-
-            // 3. Salin Rekening
-            $("#btnCopy").click(function() {
-                const rek = $("#rekNomor").text();
-                const temp = $("<input>");
-                $("body").append(temp);
-                temp.val(rek).select();
-                document.execCommand("copy");
-                temp.remove();
+            // Logic Check-in
+            $("#btnNextCheckIn").click(function() {
+                const name = $("#checkInName").val().trim();
+                if(name === "") return alert("Masukkan nama Anda!");
                 
-                $(this).text("Tersalin!").removeClass("btn-dark").addClass("btn-success");
-                setTimeout(() => {
-                    $(this).html('<i class="far fa-copy"></i> Salin Rekening').removeClass("btn-success").addClass("btn-dark");
-                }, 2000);
+                $("#displayName").text(name);
+                $("#checkInStep1").fadeOut(300, () => $("#checkInStep2").fadeIn(300));
             });
 
-            // 4. Form Ucapan
+            $("#confirmPresence").click(function() {
+                const name = $("#checkInName").val();
+                const now = new Date();
+                const timeStr = now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                // Add to list
+                $("#noGuest").hide();
+                const item = `<div class="attendance-item">
+                    <span><i class="fas fa-check-circle text-success"></i> <strong>${name}</strong></span>
+                    <small class="text-muted">${timeStr} WIB</small>
+                </div>`;
+                $("#attendance-list").prepend(item);
+                
+                // Update counter
+                guestCount++;
+                $("#countHadir").text(guestCount);
+                
+                // Reset & Hide
+                const modal = bootstrap.Modal.getInstance(document.getElementById('qrModal'));
+                modal.hide();
+                
+                $("#toastBody").text(name + " berhasil check-in!");
+                new bootstrap.Toast(document.getElementById('liveToast')).show();
+                
+                // Reset form check-in for next use
+                setTimeout(() => {
+                    $("#checkInStep2").hide();
+                    $("#checkInStep1").show();
+                    $("#checkInName").val("");
+                }, 500);
+            });
+
+            // Form Ucapan
             $("#formUcapan").submit(function(e) {
                 e.preventDefault();
-                const nama = $("#inputNama").val();
-                const pesan = $("#inputPesan").val();
-                
-                const html = `<div class="chat-msg"><b>${nama}:</b> ${pesan}</div>`;
-                $("#chat-box").append(html);
+                const n = $("#inputNama").val();
+                const p = $("#inputPesan").val();
+                $("#chat-box").append(`<div class="chat-msg"><b>${n}:</b> ${p}</div>`);
                 $("#chat-box").animate({ scrollTop: $('#chat-box')[0].scrollHeight }, 500);
-                
-                const toastLive = document.getElementById('liveToast');
-                const toast = new bootstrap.Toast(toastLive);
-                toast.show();
-                
+                $("#toastBody").text("Terima kasih atas ucapannya!");
+                new bootstrap.Toast(document.getElementById('liveToast')).show();
                 this.reset();
             });
 
-            // 5. Smooth Scroll
-            $('.floating-nav a').on('click', function(event) {
-                if (this.hash !== "") {
-                    event.preventDefault();
-                    var hash = this.hash;
-                    $('html, body').animate({
-                        scrollTop: $(hash).offset().top
-                    }, 800);
-                }
+            // Utils
+            $("#btnMap").click(() => window.open("https://www.google.com/maps?q=-7.371509,110.552469", "_blank"));
+            $("#btnCopy").click(function() {
+                const r = $("#rekNomor").text();
+                const t = $("<input>").val(r).appendTo("body").select();
+                document.execCommand("copy");
+                t.remove();
+                $(this).text("Tersalin!");
+                setTimeout(() => $(this).html('<i class="far fa-copy"></i> Salin Rekening'), 2000);
             });
         });
     </script>
